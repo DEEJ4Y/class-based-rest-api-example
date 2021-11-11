@@ -1,13 +1,10 @@
+const asyncHandler = require("../middleware/async");
 const Service = require("./index");
 
 class BookService extends Service {
-  async getAllBooks() {
-    try {
-      return await this.model.find();
-    } catch (err) {
-      return undefined;
-    }
-  }
+  getAllBooks = asyncHandler(async () => {
+    return await this.model.find();
+  });
 }
 
 module.exports = BookService;

@@ -3,30 +3,27 @@ const BookService = require("../services/book");
 
 const SuccessfulResponse = require("../middleware/succesfulResponse");
 const ErrorResponse = require("../utils/errorResponse");
+const asyncHandler = require("../middleware/async");
 
 class BookController extends Controller {
   constructor(model, modelName) {
     super(model, modelName, new BookService(model));
   }
 
-  async getAllBooks(req, res, next) {
-    try {
-      const books = await this.service.getAllBooks();
+  getAllBooks = asyncHandler(async (req, res, next) => {
+    const books = await this.service.getAllBooks();
 
-      if (!books) {
-        return next(new ErrorResponse(`No books were found.`, 404));
-      }
-
-      new SuccessfulResponse(
-        res,
-        200,
-        `The books were successfully found.`,
-        books
-      ).buildResponse();
-    } catch (err) {
-      console.error(err);
+    if (!books) {
+      return next(new ErrorResponse(`No books were found.`, 404));
     }
-  }
+
+    new SuccessfulResponse(
+      res,
+      200,
+      `The books were successfully found.`,
+      books
+    ).buildResponse();
+  });
 }
 
 module.exports = BookController;

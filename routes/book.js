@@ -5,9 +5,7 @@ class BookRouter extends Router {
   constructor(model, modelName) {
     super(model, modelName, new BookController(model, modelName));
 
-    this.router.route(this.endpoint).get((req, res, next) => {
-      this.controller.getAllBooks(req, res, next);
-    });
+    this.router.route(this.endpoint).get(this.controller.getAllBooks);
   }
 }
 
